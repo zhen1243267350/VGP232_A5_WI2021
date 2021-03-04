@@ -33,8 +33,9 @@ namespace Assignment5
         private int maxSlots;
         public Inventory(int slots)
         {
-            availableSlots = maxSlots;
+            //availableSlots = maxSlots; this should be after maxSlots=slots
             maxSlots = slots;
+            availableSlots = maxSlots;
         }
 
         /// <summary>
@@ -54,7 +55,30 @@ namespace Assignment5
         /// <returns>True if you find the item, and false if it does not exist.</returns>
         bool TakeItem(string name, out Item found)
         {
-            throw new NotImplementedException();
+            if(items.Count==0)
+            {
+                found = null;
+                return false;
+            }
+            else
+            {
+                foreach (var item in items)
+                {
+                    if (item.Key.Name == name)
+                    {
+                        found = item.Key;
+                        availableSlots = availableSlots + 1;
+                        return true;
+                    }
+                }
+                found = null;
+                return false;
+            }
+
+            /*if (items.ContainsKey(name))
+            {
+
+            }*/
         }
 
         /// <summary>
@@ -64,10 +88,23 @@ namespace Assignment5
         /// <returns></returns>
         bool AddItem(Item item)
         {
+            int location = 0;
             // Add it in the items dictionary and increment it the number if it already exist
             // Reduce the slot once it's been added.
             // returns false if the inventory is full
-            throw new NotImplementedException();
+            if (availableSlots < maxSlots)
+            {
+                for (int i = 0; i <= items.Count; i++)
+                {
+                    location = i;
+                }
+                items.Add(item, location);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -77,7 +114,13 @@ namespace Assignment5
         List<Item> ListAllItems()
         {
             // use a foreach loop to iterate through the key value pairs and duplicate the item base on the quantity.
-            throw new NotImplementedException();
+            List<Item> ItemList = new List<Item>();
+            foreach(var item in items)
+            {
+                ItemList.Add(item.Key);
+                //Console.WriteLine("Key: {0}, Value: {1}", item.Value, item.Key);
+            }
+            return ItemList;
         }
     }
 }
